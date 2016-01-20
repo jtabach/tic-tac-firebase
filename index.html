@@ -5,25 +5,32 @@
 	<title>Document</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Raleway|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lekton' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
 	
-	<h1 id="playerState"><span id="currentPlayer"></span></h1>
-	<div class="row">
-			<button class="addSym" id="s1" data-sym="1" ></button>
-			<button class="addSym" id="s2" data-sym="2" ></button>
-			<button class="addSym" id="s3" data-sym="3" ></button>
-		</div>
+	<div class="container col-sm-offset-4 col-sm-4">
 		<div class="row">
-			<button class="addSym" id="s4" data-sym="4" ></button>
-			<button class="addSym" id="s5" data-sym="5" ></button>
-			<button class="addSym" id="s6" data-sym="6" ></button>
-		</div>
-		<div class="row">
-			<button class="addSym" id="s7" data-sym="7" ></button>
-			<button class="addSym" id="s8" data-sym="8" ></button>
-			<button class="addSym" id="s9" data-sym="9" ></button>
+			<h1 id="playerState"><span id="currentPlayer"></span></h1>
+			<h2 id="winner"></h2>
+			<div class="row">
+					<button class="addSym" id="s1" data-sym="1" ></button>
+					<button class="addSym" id="s2" data-sym="2" ></button>
+					<button class="addSym" id="s3" data-sym="3" ></button>
+				</div>
+				<div class="row">
+					<button class="addSym" id="s4" data-sym="4" ></button>
+					<button class="addSym" id="s5" data-sym="5" ></button>
+					<button class="addSym" id="s6" data-sym="6" ></button>
+				</div>
+				<div class="row">
+					<button class="addSym" id="s7" data-sym="7" ></button>
+					<button class="addSym" id="s8" data-sym="8" ></button>
+					<button class="addSym" id="s9" data-sym="9" ></button>
+				</div>
+			</div>
+			<button id="reset">Restart Game</button>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>

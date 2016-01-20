@@ -1,51 +1,57 @@
 'use strict';
 
 var timestamp = Date.now();
-var newGame = true;
 var ref = new Firebase('https://tic-tac-firebase.firebaseio.com/');
 var amOnline = ref.child('.info/connected');
 var usersRef = ref.child('users');
 var playersRef = ref.child('players');
 var locations = ref.child('locations');
-
 var selfRef = usersRef.child(timestamp);
 var currentPlayerRef = ref.child('currentPlayer');
 var players, currentPlayer;
-
+var gameStart;
 var $playerState, $theButton, $currentPlayer;
 
 $(document).ready(function() {
   $currentPlayer = $("#currentPlayer")
   $theButton = $('.addSym');
   $playerState = $('#playerState');
+  $('#reset').click(resetBoard);
   $theButton.click(clickButton);
 });
 
 function clickButton() {
-  newGame = false;
-  var obj = {};
-  var nextPlayer = currentPlayer === 1 ? 0 : 1;
-  currentPlayerRef.set(nextPlayer);
-  var id = $(this).attr('id');
-  if (nextPlayer === 0) {
-  	obj[id] = "O"
-  	locations.update(obj);
-  } else {
-  	obj[id] = "X"
-  	locations.update(obj);
-  }
+	gameStart = true;
+	var obj = {};
+	var nextPlayer = currentPlayer === 1 ? 0 : 1;
+	currentPlayerRef.set(nextPlayer);
+	var id = $(this).attr('id');
+	if (nextPlayer === 0) {
+ 		obj[id] = "O"
+ 		locations.update(obj);
+	} else {
+ 		obj[id] = "X"
+ 		locations.update(obj);
+	}
 }
 
 function checkPlayer(){
   if(players[currentPlayer] == timestamp.toString()){
-    $theButton.prop('disabled', false);
-  } else {
     $theButton.prop('disabled', true);
+  } else {
+    $theButton.prop('disabled', false);
   }
   
 }
 
-if (newGame) {
+locations.once('value', function(snap) {
+	if (snap.val() == null) {
+		resetBoard();
+	}
+});
+
+function resetBoard() {
+	$('#winner').text("");
 	locations.set({
 		s1: "",
 		s2: "",
@@ -55,12 +61,14 @@ if (newGame) {
 		s6: "",
 		s7: "",
 		s8: "",
-		s9: "",
+		s9: ""
 	});
+	// $theButton.prop('disabled', false);
 }
 
 locations.on('value', function(snap) {
 	var obj = snap.val();
+	// checkPlayer();
 	for (var key in obj) {
 		$("#"+key).text(obj[key]);
 	}
@@ -69,6 +77,7 @@ locations.on('value', function(snap) {
 			$(val).prop('disabled', true);
 		}
 	});
+	// $('#reset').off('click');
 	checkWin('X');
 	checkWin('O');
 });
@@ -87,7 +96,8 @@ function checkWin(sym) {
 				}
 			});
 			if (counter === 3) {
-				return alert(sym + " wins");
+				// $('#reset').on('click');
+				$('#winner').text(sym + " wins");
 			}
 		}); 
 	});

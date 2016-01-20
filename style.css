@@ -2,4 +2,29 @@ button {
 	height: 80px;
 	width: 80px;
 	vertical-align: top;
+	font-size: 30px
+}
+
+.container {
+	text-align: center;
+	box-shadow: 00 1.5em 1.53em #ccc;
+	background-color: #e5f2ff;
+	margin-top: 50px;
+	/*opacity: 1;*/
+}
+
+body {
+	background-image: url('school.png');
+	/*opacity: 0.5;*/
+	font-family: 'Lekton', sans-serif;
+}
+
+h1 {
+	text-align: center
+}
+
+#reset {
+	height: 45px;
+	width: 254px;
+	margin: 20px 0;
 }
