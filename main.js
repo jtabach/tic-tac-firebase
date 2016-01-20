@@ -1,37 +1,5 @@
 'use strict';
 
-// var ref = new Firebase('https://tic-tac-firebase.firebaseio.com/');
-
-
-// var userid = Math.floor(Math.random() * 10000);
-// var amOnline = new Firebase('https://tic-tac-firebase.firebaseio.com/.info/connected');
-// var userRef = new Firebase('https://tic-tac-firebase.firebaseio.com/presence/' + userid);
-// var players = ref.child('players');
-// amOnline.on('value', function(snapshot) {
-//   if (snapshot.val()) {
-//     userRef.onDisconnect().remove();
-//     userRef.set(true);
-//     ref.once("value", function(snap){
-//     	var numPlayers = snap.child("presence").numChildren();
-//       setSymbols(numPlayers);
-//     })
-//     console.log('off');
-//   }
-// });
-
-
-// $(document).ready(function() {
-
-// });
-
-// function setSymbols(numPlayers) {
-// 	if (numPlayers == 2) {
-// 		players.update({'O': userid})
-// 	} else {
-// 		players.update({'X': userid})
-// 	}
-// }
-
 var timestamp = Date.now();
 var newGame = true;
 var ref = new Firebase('https://tic-tac-firebase.firebaseio.com/');
@@ -39,8 +7,8 @@ var amOnline = ref.child('.info/connected');
 var usersRef = ref.child('users');
 var playersRef = ref.child('players');
 var locations = ref.child('locations');
-var selfRef = usersRef.child(timestamp);
 
+var selfRef = usersRef.child(timestamp);
 var currentPlayerRef = ref.child('currentPlayer');
 var players, currentPlayer;
 
@@ -93,16 +61,37 @@ if (newGame) {
 
 locations.on('value', function(snap) {
 	var obj = snap.val();
-	var $val = $(val);
 	for (var key in obj) {
 		$("#"+key).text(obj[key]);
 	}
 	$.each($theButton, function(i, val) {
-	  	if ($val.text() !== "") {
-			$val.prop('disabled', true);
+	  	if ($(val).text() !== "") {
+			$(val).prop('disabled', true);
 		}
 	});
+	checkWin('X');
+	checkWin('O');
 });
+
+function checkWin(sym) {
+	var winningCombos = [['s1','s2','s3'],['s4','s5','s6'],['s7','s8','s9'],
+		['s1','s4','s7'],['s2','s5','s8'],['s3','s6','s9'],['s1','s5','s9'],
+		['s3','s5','s7']];
+	var winner = false;
+	winningCombos.forEach(function (combo) {
+		var counter = 0;
+		combo.forEach(function(loc) {
+			locations.child(loc).once('value', function(snap) {
+				if (snap.val() === sym) {
+					counter++;
+				}
+			});
+			if (counter === 3) {
+				return alert(sym + " wins");
+			}
+		}); 
+	});
+}
 
 playersRef.on('value', function(snap) {
 	players = snap.val();
