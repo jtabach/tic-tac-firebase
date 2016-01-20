@@ -58,7 +58,6 @@ function clickButton() {
   var obj = {};
   var nextPlayer = currentPlayer === 1 ? 0 : 1;
   currentPlayerRef.set(nextPlayer);
-  console.log($(this).attr('id'));
   var id = $(this).attr('id');
   if (nextPlayer === 0) {
   	obj[id] = "O"
@@ -75,15 +74,8 @@ function checkPlayer(){
   } else {
     $theButton.prop('disabled', true);
   }
+  
 }
-
-
-// locations.some(function(input)){
-// 	if(input){
-// 		return true
-// 	}
-// }
-
 
 if (newGame) {
 	locations.set({
@@ -99,22 +91,28 @@ if (newGame) {
 	});
 }
 
-
 locations.on('value', function(snap) {
-	console.log($(this));
-	console.log(snap.val());
+	var obj = snap.val();
+	var $val = $(val);
+	for (var key in obj) {
+		$("#"+key).text(obj[key]);
+	}
+	$.each($theButton, function(i, val) {
+	  	if ($val.text() !== "") {
+			$val.prop('disabled', true);
+		}
+	});
 });
 
-
 playersRef.on('value', function(snap) {
-  players = snap.val();
-  $playerState.text('');
-  snap.forEach(function(playerSnap) {
-    if(playerSnap.val() === timestamp.toString()) {
-      $playerState.text("You're Player " + playerSnap.key());
-    }
-  });
-  checkPlayer();
+	players = snap.val();
+	$playerState.text('');
+	snap.forEach(function(playerSnap) {
+	    if(playerSnap.val() === timestamp.toString()) {
+			$playerState.text("You're Player " + playerSnap.key());
+		}
+	});
+	checkPlayer();
 });
 
 currentPlayerRef.on('value', function(snap) {
